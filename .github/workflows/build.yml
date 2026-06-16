@@ -161,6 +161,8 @@ jobs:
 
         # Patch 2: Rename frida-agent shared library
         find subprojects/frida-core -path "*/releng/meson" -prune -o \( -name "*.py" -o -name "*.vala" -o -name "meson.build" \) -print0 | xargs -0 sed -i 's/frida-agent/florida-agent/g'
+        # Also rename actual files
+        find subprojects/frida-core -name "frida-agent*" -type f | while read f; do mv "$f" "$(echo $f | sed 's/frida-agent/florida-agent/g')"; done
         echo "  [OK] frida-agent renamed to florida-agent"
 
         # Patch 3: Rename frida_agent_main symbol
