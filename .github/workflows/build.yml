@@ -160,28 +160,28 @@ jobs:
         echo "  [OK] frida:rpc string obfuscated"
 
         # Patch 2: Rename frida-agent shared library
-        find subprojects/frida-core -name "*.py" -o -name "*.vala" -o -name "meson.build" | xargs sed -i 's/frida-agent/florida-agent/g'
+        find subprojects/frida-core -path "*/releng/meson" -prune -o \( -name "*.py" -o -name "*.vala" -o -name "meson.build" \) -print0 | xargs -0 sed -i 's/frida-agent/florida-agent/g'
         echo "  [OK] frida-agent renamed to florida-agent"
 
         # Patch 3: Rename frida_agent_main symbol
-        find subprojects/frida-core -name "*.c" -o -name "*.h" -o -name "*.vala" -o -name "*.py" | xargs sed -i 's/frida_agent_main/florida_agent_main/g'
+        find subprojects/frida-core -path "*/releng/meson" -prune -o \( -name "*.c" -o -name "*.h" -o -name "*.vala" -o -name "*.py" \) -print0 | xargs -0 sed -i 's/frida_agent_main/florida_agent_main/g'
         echo "  [OK] frida_agent_main renamed"
 
         # Patch 4: Rename thread names
-        find subprojects/frida-core subprojects/frida-gum -name "*.c" -o -name "*.vala" | xargs sed -i 's/gum-js-loop/fm-js-loop/g'
-        find subprojects/frida-core subprojects/frida-gum -name "*.c" -o -name "*.vala" | xargs sed -i 's/gmain/fmain/g'
+        find subprojects/frida-core subprojects/frida-gum -path "*/releng/meson" -prune -o \( -name "*.c" -o -name "*.vala" \) -print0 | xargs -0 sed -i 's/gum-js-loop/fm-js-loop/g'
+        find subprojects/frida-core subprojects/frida-gum -path "*/releng/meson" -prune -o \( -name "*.c" -o -name "*.vala" \) -print0 | xargs -0 sed -i 's/gmain/fmain/g'
         echo "  [OK] thread names renamed"
 
         # Patch 5: Rename "FRIDA" in protocol
-        find subprojects/frida-core -name "*.vala" | xargs sed -i 's/"unexpected command"/"unknown request"/g'
+        find subprojects/frida-core -path "*/releng/meson" -prune -o -name "*.vala" -print0 | xargs -0 sed -i 's/"unexpected command"/"unknown request"/g'
         echo "  [OK] protocol strings renamed"
 
         # Patch 6: Rename pool thread name
-        find subprojects/frida-core subprojects/frida-gum -name "*.c" | xargs sed -i 's/"frida-"/"fl-"/g'
+        find subprojects/frida-core subprojects/frida-gum -path "*/releng/meson" -prune -o -name "*.c" -print0 | xargs -0 sed -i 's/"frida-"/"fl-"/g'
         echo "  [OK] pool thread prefix renamed"
 
         # Patch 7: Rename memfd name
-        find subprojects/frida-gum -name "*.c" | xargs sed -i 's/"jit-cache"/"jc-mem"/g'
+        find subprojects/frida-gum -path "*/releng/meson" -prune -o -name "*.c" -print0 | xargs -0 sed -i 's/"jit-cache"/"jc-mem"/g'
         echo "  [OK] memfd name renamed"
 
         echo "All patches applied!"
